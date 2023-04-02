@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+// protoファイルから自動生成させるGoのコードの置き先
+option go_package = "pkg/grpc";
+
+package user;
+
+// import "commons.proto";
+
+message User {
+	int32 id = 1;
+	string name = 2;
+}
+
+message Id {
+	int32 id = 1;
+}
+
+service UsersService {
+	rpc findOneById(Id) returns (User) {}
+}
