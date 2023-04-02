@@ -1,7 +1,7 @@
 package config
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/spf13/viper"
 )
@@ -11,9 +11,10 @@ type Config struct {
 }
 
 func NewConfig(path string) (*Config, error) {
+	fmt.Println(path)
 	viper.AddConfigPath(path)
-	// viper.SetConfigName("app")
-	viper.SetConfigType(".env")
+	viper.SetConfigName(".env")
+	viper.SetConfigType("env")
 
 	viper.AutomaticEnv()
 
@@ -21,8 +22,13 @@ func NewConfig(path string) (*Config, error) {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		log.Println(err)
-		return config, err
+		if err, ok := err.(viper.ConfigFileNotFoundError); ok {
+			// Config file not found; ignore error if desired
+			fmt.Println(err)
+			return config, err
+		} else {
+			panic(fmt.Errorf("fatal error config file: %w", err))
+		}
 	}
 
 	// config := &Config{}
