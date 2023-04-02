@@ -1,22 +1,32 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"log"
+
+	"github.com/spf13/viper"
+)
 
 type Config struct {
 	GRPCServerPort string `mapstructure:"GRPC_SERVER_PORT"`
 }
 
-func NewConfig(path string) (config Config, err error) {
+func NewConfig(path string) (*Config, error) {
 	viper.AddConfigPath(path)
-	viper.SetConfigType("env")
+	// viper.SetConfigName("app")
+	viper.SetConfigType(".env")
 
 	viper.AutomaticEnv()
 
-	err = viper.ReadInConfig()
+	config := &Config{}
+
+	err := viper.ReadInConfig()
 	if err != nil {
-		return
+		log.Println(err)
+		return config, err
 	}
 
-	err = viper.Unmarshal(&config)
-	return
+	// config := &Config{}
+
+	err = viper.Unmarshal(config)
+	return config, err
 }
