@@ -8,12 +8,12 @@ import { join } from 'path';
   imports: [
     ClientsModule.register([
       {
-        name: 'USER_PACKAGE',
+        name: 'UsersServiceClient',
         transport: Transport.GRPC,
         options: {
           url: 'localhost:8080',
           package: 'user',
-          protoPath: join(__dirname, './proto/user.proto'),
+          protoPath: join(__dirname, '../proto/users.proto'),
         },
       },
     ]),

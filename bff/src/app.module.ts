@@ -1,8 +1,9 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { UsersModules } from './users/users.module';
+import { CorsMiddleware } from './middleware/cors.middleware';
 
 @Module({
   imports: [
@@ -11,8 +12,15 @@ import { UsersModules } from './users/users.module';
       autoSchemaFile: join(process.cwd(), '/src/graphql/schema.gql'),
       sortSchema: true,
       driver: ApolloDriver,
+      playground: {
+        endpoint: '/',
+      },
     }),
     UsersModules,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CorsMiddleware).forRoutes('*');
+  }
+}

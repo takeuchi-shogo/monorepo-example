@@ -14,11 +14,11 @@ export class UserResolver implements OnModuleInit {
   private usersService: IUserService;
 
   onModuleInit() {
-    this.usersService = this.client.getService<IUserService>('');
+    this.usersService = this.client.getService<IUserService>('UsersService');
   }
 
   @Query(() => User, { name: 'user' })
   async getUser(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.findOneById(id);
+    return this.usersService.findOneById({ id: id });
   }
 }

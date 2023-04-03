@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
 
 export interface IUserService {
-  findOneById(id: number): Observable<any>;
+  findOneById(id: any): Observable<any>;
 }
